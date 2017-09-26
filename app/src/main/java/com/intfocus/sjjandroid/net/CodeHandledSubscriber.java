@@ -25,15 +25,15 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     private static final int BAD_GATEWAY = 502;
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
-    private static final String INVALID_TOKEN = "10005";
-    public static final String REQUEST_SUCCESS = "200";//---------------------一般请求的 成功状态码
-    public static final String REQUEST_SUCCESS_ONE = "0";//---------------------获取收藏列表的 成功状态码
-    public static final String REQUEST_SUCCESS_TWO = "201";//---------------------操作收藏的 成功状态码
-    private static final String REQUEST_SUCCESS_NEED_NEXT = "-600";
+    private static final int INVALID_TOKEN = 10005;
+    public static final int REQUEST_SUCCESS = 200;//---------------------一般请求的 成功状态码
+    public static final int REQUEST_SUCCESS_ONE = 0;//---------------------获取收藏列表的 成功状态码
+    public static final int REQUEST_SUCCESS_TWO = 201;//---------------------操作收藏的 成功状态码
+    private static final int REQUEST_SUCCESS_NEED_NEXT = -600;
     private static final int GUO_TIME = -300;
-    private static final String SYSTEM_BUSY = "10010";
+    private static final int SYSTEM_BUSY = 10010;
     //权限不足
-    private static final String INSUFFICIENT_PERMISSIONS = "30010";
+    private static final int INSUFFICIENT_PERMISSIONS = 30010;
     //出错提示
     private final String networkMsg = "网络错误";
     private final String parseMsg = "解析错误";
@@ -115,10 +115,10 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     public void onNext(T t) {
         if (t instanceof BaseResult) {
             BaseResult baseResultEntity = (BaseResult) t;
-            if (REQUEST_SUCCESS.equals(baseResultEntity.getCode()) || REQUEST_SUCCESS_ONE.equals(baseResultEntity.getCode())) {
+            if (REQUEST_SUCCESS == baseResultEntity.getCode() || REQUEST_SUCCESS_ONE == baseResultEntity.getCode()) {
                 onBusinessNext(t);
             } else {
-                onError(new ApiException(Integer.parseInt(baseResultEntity.getCode()), baseResultEntity.getMessage()));
+                onError(new ApiException(baseResultEntity.getCode(), baseResultEntity.getMsg()));
             }
         }
     }

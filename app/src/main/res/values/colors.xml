@@ -2,10 +2,16 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#fd8517</color>
 
     <!--登录页-->
     <color name="btn_active">#fd8517</color>
     <color name="btn_not_active">#d1d1d1</color>
     <color name="login_text_color">#fd8517</color>
+    <color name="co3">#ebebeb</color>
+    <color name="co1">#fd8517</color>
+    <color name="co10">#ffffff</color>
+    <color name="co7">#283044</color>
+    <color name="co11">#f57658</color>
+    <color name="transparent">#ffffffff</color>
 </resources>

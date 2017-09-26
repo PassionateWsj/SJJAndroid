@@ -6,5 +6,5 @@ package com.intfocus.sjjandroid.data.response
 open class BaseResult {
     var message: String? = null
     var msg: String? = null
-    var code: String? = null
+    var code: Int? = null
 }

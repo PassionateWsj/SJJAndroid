@@ -47,7 +47,7 @@ public class HttpStateInterceptor implements Interceptor {
             try {
                 BaseResult baseResult = new Gson().fromJson(bodyString, BaseResult.class);
                 if (baseResult != null) {
-                    msg = baseResult.getMessage();
+                    msg = baseResult.getMsg();
                 }
             } catch (Exception e) {
                 msg = e.getMessage().toString();

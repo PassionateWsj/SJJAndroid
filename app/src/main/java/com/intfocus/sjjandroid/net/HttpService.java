@@ -1,7 +1,8 @@
 package com.intfocus.sjjandroid.net;
 
 import com.intfocus.sjjandroid.constant.API;
-import com.intfocus.sjjandroid.data.response.BaseResult;
+import com.intfocus.sjjandroid.data.response.login.LoginResult;
+import com.intfocus.sjjandroid.data.response.login.RegisterResult;
 import com.intfocus.sjjandroid.data.response.login.VerificationResult;
 
 import retrofit2.http.GET;
@@ -15,13 +16,36 @@ import rx.Observable;
 public interface HttpService {
 
     /**
-     * 申请注册
-     *
+     * 获取注册验证码
+     * <p>
      * GET
-     * /api/v1.1/config/info
-     *
+     * api/v1/register/verificationcode
+     * <p>
      * keyname
      */
-    @GET(API.REGISTER)
-    Observable<VerificationResult> register(@Query("mobile") String mobile);
+    @GET(API.API_GET_VERIFICATION_CODE)
+    Observable<VerificationResult> getVerificationCode(@Query("mobile") String mobile);
+
+    /**
+     * 申请注册
+     * <p>
+     * GET
+     * api/v1/register/user
+     * <p>
+     * keyname
+     */
+    @GET(API.API_REGISTER_USER)
+    Observable<RegisterResult> register(@Query("mobile") String mobile, @Query("password") String password, @Query("verificationCode") String verificationCode);
+
+    /**
+     * 用户登录
+     * <p>
+     * GET
+     * api/v1/login/user
+     * <p>
+     * keyname
+     */
+    @GET(API.API_LOGIN_USER)
+    Observable<LoginResult> userLogin(@Query("mobile") String mobile, @Query("password") String password);
+
 }

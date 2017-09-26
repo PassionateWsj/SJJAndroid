@@ -1,7 +1,8 @@
 package com.intfocus.sjjandroid.net;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+
+import com.intfocus.sjjandroid.constant.API;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -29,7 +30,7 @@ import rx.schedulers.Schedulers;
  */
 public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
-    private static final String DEFAULT_BASE_URL = "http://118.190.142.115:8080/";
+    private static final String DEFAULT_BASE_URL = API.BASE_URL;
     private HttpService httpService;
 
     private RetrofitUtil() {
@@ -41,7 +42,7 @@ public class RetrofitUtil {
                 .addConverterFactory(GsonConverterFactory.create())
                  /*设置 ScalarsConverterFactory返回纯String*/
 //                .addConverterFactory(ScalarsConverterFactory.create())
-                .client(getClientBuilder().build())
+//                .client(getClientBuilder().build())
                 .build();
         httpService = retrofit.create(HttpService.class);
     }

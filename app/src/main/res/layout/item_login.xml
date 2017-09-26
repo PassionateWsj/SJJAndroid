@@ -9,31 +9,59 @@
         android:id="@+id/et_login_mobile"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:hint="输入手机号码"/>
+        android:layout_marginLeft="6dp"
+        android:inputType="number"
+        android:layout_marginRight="6dp"
+        android:background="@null"
+        android:hint="输入手机号码"
+        android:textSize="16sp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/co3"/>
 
     <EditText
         android:id="@+id/et_login_password"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:inputType="textPassword"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@null"
         android:hint="设置密码"
         android:textSize="16sp"/>
 
-    <Button
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/co3"/>
+
+    <TextView
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_marginLeft="6dp"
+        android:onClick="clickButton"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/background_login_verificatoin_code_botton"
+        android:textColor="@color/co7"
+        android:clickable="true"
         android:text="登录"
-        android:textSize="16sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/tv_account_not_exist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_gravity="center"
-        android:textColor="@color/login_text_color"
+        android:layout_marginTop="16dp"
+        android:onClick="switchStatus"
         android:text="注册"
-        android:textSize="12sp"
-        android:onClick="switchStatus"/>
+        android:textColor="@color/login_text_color"
+        android:textSize="12sp"/>
 
 </LinearLayout>
