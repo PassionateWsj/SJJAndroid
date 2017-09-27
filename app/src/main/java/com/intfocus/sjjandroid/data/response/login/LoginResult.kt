@@ -12,7 +12,7 @@ import com.intfocus.sjjandroid.data.response.BaseResult
  * ****************************************************
  */
 class LoginResult : BaseResult() {
-    var data: List<DataBean>? = null
+    var data: DataBean? = null
 
     class DataBean {
         /**

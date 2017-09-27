@@ -36,10 +36,25 @@ class LoginActivity : BaseActivity() {
     private val TAG = "hjjzz"
 
     private lateinit var ctx: Context
+    /**
+     * 用户名是否保存在本地
+     */
     private var accountIsExist = true
+    /**
+     * 是否允许登录
+     */
     private var loginAllow = false
+    /**
+     * 是否允许注册
+     */
     private var registerAllow = false
+    /**
+     * 登录子页面
+     */
     private var loginLayout: View? = null
+    /**
+     * 登录子页面
+     */
     private var registerLayout: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +74,7 @@ class LoginActivity : BaseActivity() {
                 loginLayout = LinearLayout.inflate(ctx, R.layout.item_login, null)
             }
             fl_login_content.addView(loginLayout, 0)
+            // 登录 手机号内容监听
             et_login_mobile.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     changeButtonStyle(et_login_password.text.toString(), p0.toString(), btn_login)
@@ -68,6 +84,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
+            // 登录 密码内容监听
             et_login_password.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     changeButtonStyle(et_login_mobile.text.toString(), p0.toString(), btn_login)
@@ -81,15 +98,19 @@ class LoginActivity : BaseActivity() {
             timer.cancel()
             registerLayout = LinearLayout.inflate(ctx, R.layout.item_register, null)
             fl_login_content.addView(registerLayout, 0)
+            // 注册 手机号输入内容监听
             registerLayout!!.et_register_mobile.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     changeButtonStyle(registerLayout!!.et_register_password.text.toString(), registerLayout!!.et_register_verification.text.toString(), p0.toString(), registerLayout!!.btn_register)
                 }
 
-                override fun afterTextChanged(p0: Editable?) {}
+                override fun afterTextChanged(p0: Editable?) {
+                    changeTextViewStyle(registerLayout!!.tv_get_verification, checkPhoneNum(p0.toString()))
+                }
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
+            // 注册 密码内容监听
             registerLayout!!.et_register_password.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     changeButtonStyle(registerLayout!!.et_register_mobile.text.toString(), registerLayout!!.et_register_verification.text.toString(), p0.toString(), registerLayout!!.btn_register)
@@ -105,6 +126,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
+            // 注册 验证码内容监听
             registerLayout!!.et_register_verification.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     changeButtonStyle(registerLayout!!.et_register_password.text.toString(), registerLayout!!.et_register_mobile.text.toString(), p0.toString(), registerLayout!!.btn_register)
@@ -114,6 +136,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
+            // 注册 密码焦点监听
             registerLayout!!.et_register_password.setOnFocusChangeListener { v, hasFocus ->
                 if (registerLayout!!.et_register_password.text.isNotEmpty() && hasFocus) {
                     registerLayout!!.cb_register_see_pwd.visibility = View.VISIBLE
@@ -126,30 +149,33 @@ class LoginActivity : BaseActivity() {
     }
 
     fun changeButtonStyle(checkNull1: String, checkNull2: String, inputString: String, button: TextView) {
-        if (!checkNull1.isNullOrEmpty() && !checkNull2.isNullOrEmpty() && !inputString.isNullOrEmpty()) {
-            button.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton_press)
-            button.setTextColor(ContextCompat.getColor(this, R.color.co10))
-            registerAllow = true
-        } else {
-            button.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton)
-            button.setTextColor(ContextCompat.getColor(this, R.color.co7))
-            registerAllow = false
-        }
+        registerAllow = !checkNull1.isNullOrEmpty() && !checkNull2.isNullOrEmpty() && !inputString.isNullOrEmpty()
+        changeTextViewStyle(button, registerAllow)
 
     }
 
     fun changeButtonStyle(checkNull1: String, inputString: String, button: TextView) {
-        if (!checkNull1.isNullOrEmpty() && !inputString.isNullOrEmpty()) {
+        loginAllow = !checkNull1.isNullOrEmpty() && !inputString.isNullOrEmpty()
+        changeTextViewStyle(button, loginAllow)
+    }
+
+    /**
+     * 统一修改 TextView 方法
+     */
+    private fun changeTextViewStyle(button: TextView, pressStyle: Boolean) {
+        if (pressStyle) {
             button.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton_press)
             button.setTextColor(ContextCompat.getColor(this, R.color.co10))
-            loginAllow = true
         } else {
             button.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton)
             button.setTextColor(ContextCompat.getColor(this, R.color.co7))
-            loginAllow = false
         }
+
     }
 
+    /**
+     * 倒计时
+     */
     private val timer = object : CountDownTimer(60000, 1000) {
 
         override fun onTick(millisUntilFinished: Long) {
@@ -158,8 +184,7 @@ class LoginActivity : BaseActivity() {
 
         override fun onFinish() {
             registerLayout!!.tv_get_verification.isEnabled = true
-            registerLayout!!.tv_get_verification.setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.co7))
-            registerLayout!!.tv_get_verification.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton)
+            changeTextViewStyle(registerLayout!!.tv_get_verification, true)
             registerLayout!!.tv_get_verification.text = "获取验证码"
         }
     }
@@ -175,13 +200,20 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 点击按键统一处理方法
+     */
     fun clickButton(v: View) {
         when {
             v.id == R.id.cb_register_see_pwd -> {
                 setEditTextInputTypeByCheckBox(registerLayout!!.et_register_password, registerLayout!!.cb_register_see_pwd)
             }
             v.id == R.id.tv_get_verification -> {
-                if (registerLayout!!.et_register_mobile.text.toString().matches(Regex("[1][34578]\\d{9}"))) {
+                if (checkPhoneNum(registerLayout!!.et_register_mobile.text.toString())) {
+                    if (registerLayout!!.tv_get_verification.text.toString() != "获取验证码") {
+                        return
+                    }
+                    changeTextViewStyle(registerLayout!!.tv_get_verification, false)
                     // 获取验证码
                     RetrofitUtil.getHttpService().getVerificationCode(registerLayout!!.et_register_mobile.text.toString())
                             .compose(RetrofitUtil.CommonOptions<VerificationResult>())
@@ -202,18 +234,15 @@ class LoginActivity : BaseActivity() {
                                 }
                             })
 
-                    registerLayout!!.tv_get_verification.setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.co10))
-                    registerLayout!!.tv_get_verification.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton_press)
                     timer.start()
                 } else {
                     registerLayout!!.tv_get_verification.text = "获取验证码"
-                    registerLayout!!.tv_get_verification.setTextColor(ContextCompat.getColor(this, R.color.co7))
-                    registerLayout!!.tv_get_verification.background = resources.getDrawable(R.drawable.background_login_verificatoin_code_botton)
+                    changeTextViewStyle(registerLayout!!.tv_get_verification, false)
                     ToastUtils.show(this, "手机号不合法")
                 }
             }
             v.id == R.id.btn_login && loginAllow -> {
-                if (et_login_mobile.text.toString().matches(Regex("[1][34578]\\d{9}"))) {
+                if (checkPhoneNum(et_login_mobile.text.toString())) {
                     Log.i(TAG, "登录")
                     // todo 用户登录
                     RetrofitUtil.getHttpService()
@@ -232,9 +261,9 @@ class LoginActivity : BaseActivity() {
 
                                 override fun onBusinessNext(data: LoginResult?) {
 //                                    ToastUtils.show(this@LoginActivity, "登录成功")
-                                    if (data!!.data!![0].profession_ids == null) {
+                                    if (data!!.data!!.profession_ids == null) {
                                         // todo 用户职业为 null 则跳转职业选择界面
-                                        startActivity(Intent(this@LoginActivity,ChooseCareerActivity::class.java))
+                                        startActivity(Intent(this@LoginActivity, ChooseCareerActivity::class.java))
                                     }
                                 }
 
@@ -270,4 +299,10 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 正则手机号
+     */
+    fun checkPhoneNum(phoneNumber: String): Boolean {
+        return phoneNumber.matches(Regex("[1][34578]\\d{9}"))
+    }
 }

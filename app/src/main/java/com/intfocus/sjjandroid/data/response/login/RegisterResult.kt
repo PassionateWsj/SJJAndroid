@@ -19,7 +19,7 @@ class RegisterResult : BaseResult() {
      * data : [{"password":"123123","updated_at":"2017-09-26 16:53:32","name":null,"mobile":"13111111111","description":null,"created_at":"2017-09-26 16:53:32","uuid":"a589a128-d846-42de-93d2-4887f1d5f0d5","profession_ids":null}]
      */
 
-    private var data: List<DataBean>? = null
+    private var data: DataBean? = null
 
     class DataBean {
         /**
