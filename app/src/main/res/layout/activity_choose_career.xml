@@ -1,62 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     tools:context="com.intfocus.sjjandroid.login.ChooseCareerActivity">
 
     <TextView
         android:id="@+id/tv_choose_career_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
-        android:text="职业选择"
+        android:text="@string/choose_career_title"
         android:textColor="@color/co7"
         android:textSize="18sp"/>
 
-    <ImageView
-        android:id="@+id/iv_choose_career_student"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_below="@id/tv_choose_career_title"
-        android:layout_marginTop="31dp"
-        android:layout_weight="2"
-        android:onClick="clickCareer"
-        android:scaleType="fitCenter"
-        android:src="@drawable/student"/>
-
-    <ImageView
-        android:id="@+id/iv_choose_career_data_man"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_below="@id/tv_choose_career_title"
-        android:layout_marginTop="31dp"
-        android:layout_weight="2"
-        android:onClick="clickCareer"
-        android:scaleType="fitCenter"
-        android:src="@drawable/data_man"/>
-
-    <ImageView
-        android:id="@+id/iv_choose_career_running"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_below="@id/tv_choose_career_title"
-        android:layout_marginTop="31dp"
-        android:layout_weight="2"
-        android:onClick="clickCareer"
-        android:scaleType="fitCenter"
-        android:src="@drawable/running"/>
-
     <TextView
+        android:id="@+id/tv_choose_career_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="41dp"
-        android:layout_marginTop="31dp"
-        android:text="请选择您对应的职业"
+        android:text="@string/choose_career_describe"
         android:textColor="@color/co7"
         android:textSize="14sp"/>
 
-</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_choose_career"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tv_choose_career_tip"
+        android:layout_below="@id/tv_choose_career_title"/>
+</RelativeLayout>

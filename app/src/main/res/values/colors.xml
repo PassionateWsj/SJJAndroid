@@ -13,5 +13,7 @@
     <color name="co10">#ffffff</color>
     <color name="co7">#283044</color>
     <color name="co11">#f57658</color>
+    <color name="co11_t20">#ccf57658</color>
     <color name="transparent">#ffffffff</color>
+    <color name="co1_t20">#ccfd8517</color>
 </resources>

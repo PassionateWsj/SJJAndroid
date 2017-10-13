@@ -1,6 +1,8 @@
 package com.intfocus.sjjandroid.net;
 
 import com.intfocus.sjjandroid.constant.API;
+import com.intfocus.sjjandroid.data.response.BaseResult;
+import com.intfocus.sjjandroid.data.response.info.ProfessionResult;
 import com.intfocus.sjjandroid.data.response.login.LoginResult;
 import com.intfocus.sjjandroid.data.response.login.RegisterResult;
 import com.intfocus.sjjandroid.data.response.login.VerificationResult;
@@ -47,5 +49,28 @@ public interface HttpService {
      */
     @GET(API.API_LOGIN_USER)
     Observable<LoginResult> userLogin(@Query("mobile") String mobile, @Query("password") String password);
+
+    /**
+     * 获取职业列表
+     * <p>
+     * GET
+     * api/v1/list/professions
+     * <p>
+     * keyname
+     */
+    @GET(API.API_GET_PROFESSIONS)
+    Observable<ProfessionResult> getProfessions();
+
+    /**
+     * 关联职业列表
+     * <p>
+     * GET
+     * api/v1/user/professions
+     * <p>
+     * keyname
+     */
+    @GET(API.API_BIND_PROFESSIONS)
+    Observable<BaseResult> bindProfessions(@Query("userId") int userId, @Query("professionIds") int professionIds);
+
 
 }

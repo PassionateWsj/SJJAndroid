@@ -17,14 +17,14 @@ object ToastUtils {
     private var mToast: Toast? = null
 
     fun show(context: Context, message: String) {
-        show(context, message, R.color.co11)
+        show(context, message, R.color.co11_t20)
     }
 
     fun show(context: Context, message: String, toastColor: ToastColor = ToastColor.SUCCESS) {
         if (ToastColor.SUCCESS == toastColor) {
-            show(context, message, R.color.co1)
+            show(context, message, R.color.co1_t20)
         } else {
-            show(context, message, R.color.co11)
+            show(context, message, R.color.co11_t20)
         }
     }
 

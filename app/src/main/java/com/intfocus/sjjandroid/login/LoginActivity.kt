@@ -19,14 +19,17 @@ import com.intfocus.sjjandroid.R
 import com.intfocus.sjjandroid.data.response.login.LoginResult
 import com.intfocus.sjjandroid.data.response.login.RegisterResult
 import com.intfocus.sjjandroid.data.response.login.VerificationResult
+import com.intfocus.sjjandroid.main.MainActivity
 import com.intfocus.sjjandroid.net.ApiException
 import com.intfocus.sjjandroid.net.CodeHandledSubscriber
 import com.intfocus.sjjandroid.net.RetrofitUtil
+import com.intfocus.sjjandroid.utils.ToastColor
 import com.intfoucs.sjjandroid.BaseActivity
 import com.intfoucs.sjjandroid.ToastUtils
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.item_login.*
 import kotlinx.android.synthetic.main.item_register.view.*
+import java.util.*
 
 
 /**
@@ -56,7 +59,8 @@ class LoginActivity : BaseActivity() {
      * 登录子页面
      */
     private var registerLayout: View? = null
-
+    private val MIN_CLICK_DELAY_TIME: Int = 1000
+    private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -204,6 +208,12 @@ class LoginActivity : BaseActivity() {
      * 点击按键统一处理方法
      */
     fun clickButton(v: View) {
+        val currentTime = Calendar.getInstance().timeInMillis
+        if (currentTime - lastClickTime < MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime
+            return
+        }
+        lastClickTime = currentTime
         when {
             v.id == R.id.cb_register_see_pwd -> {
                 setEditTextInputTypeByCheckBox(registerLayout!!.et_register_password, registerLayout!!.cb_register_see_pwd)
@@ -247,7 +257,7 @@ class LoginActivity : BaseActivity() {
                     // todo 用户登录
                     RetrofitUtil.getHttpService()
                             .userLogin(et_login_mobile.text.toString(),
-                                    et_login_password.toString())
+                                    et_login_password.text.toString())
                             .compose(RetrofitUtil.CommonOptions<LoginResult>())
                             .subscribe(object : CodeHandledSubscriber<LoginResult>() {
                                 override fun onCompleted() {
@@ -261,9 +271,13 @@ class LoginActivity : BaseActivity() {
 
                                 override fun onBusinessNext(data: LoginResult?) {
 //                                    ToastUtils.show(this@LoginActivity, "登录成功")
-                                    if (data!!.data!!.profession_ids == null) {
+                                    if (data!!.data!!.profession_id == 0) {
                                         // todo 用户职业为 null 则跳转职业选择界面
-                                        startActivity(Intent(this@LoginActivity, ChooseCareerActivity::class.java))
+                                        val intent = Intent(this@LoginActivity, ChooseCareerActivity::class.java)
+                                        intent.putExtra("userId", data.data!!.user_id)
+                                        startActivity(intent)
+                                    } else {
+                                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                     }
                                 }
 
@@ -277,8 +291,8 @@ class LoginActivity : BaseActivity() {
                 // todo 注册
                 RetrofitUtil.getHttpService()
                         .register(registerLayout!!.et_register_mobile.text.toString(),
-                                registerLayout!!.et_register_password.toString(),
-                                registerLayout!!.et_register_verification.toString())
+                                registerLayout!!.et_register_password.text.toString(),
+                                registerLayout!!.et_register_verification.text.toString())
                         .compose(RetrofitUtil.CommonOptions<RegisterResult>())
                         .subscribe(object : CodeHandledSubscriber<RegisterResult>() {
                             override fun onCompleted() {
@@ -291,7 +305,7 @@ class LoginActivity : BaseActivity() {
                             }
 
                             override fun onBusinessNext(data: RegisterResult?) {
-                                ToastUtils.show(this@LoginActivity, "注册成功")
+                                ToastUtils.show(this@LoginActivity, "注册成功", ToastColor.SUCCESS)
                             }
 
                         })

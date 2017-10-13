@@ -2,30 +2,56 @@ package com.intfocus.sjjandroid.login
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
+import android.support.v7.widget.LinearLayoutManager
 import com.intfocus.sjjandroid.R
-import com.intfocus.sjjandroid.utils.ToastColor
-import com.intfoucs.sjjandroid.ToastUtils
+import com.intfocus.sjjandroid.data.response.info.ProfessionResult
+import com.intfocus.sjjandroid.login.adapter.ProfessionAdapter
+import com.intfocus.sjjandroid.net.ApiException
+import com.intfocus.sjjandroid.net.CodeHandledSubscriber
+import com.intfocus.sjjandroid.net.RetrofitUtil
+import kotlinx.android.synthetic.main.activity_choose_career.*
 
 class ChooseCareerActivity : AppCompatActivity() {
+
+    private var adapter: ProfessionAdapter? = null
+    private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_career)
+
+        initData()
+        initAdapter()
+        loadData()
     }
 
-    fun clickCareer(view: View) {
-        when (view.id) {
-            R.id.iv_choose_career_student -> {
-                ToastUtils.show(this, "学生",ToastColor.SUCCESS)
-            }
-            R.id.iv_choose_career_data_man -> {
-                ToastUtils.show(this, "数据人",ToastColor.SUCCESS)
-            }
-            R.id.iv_choose_career_running -> {
-                ToastUtils.show(this, "运营汪",ToastColor.SUCCESS)
-            }
-
-        }
+    private fun initData() {
+        userId = intent.getIntExtra("userId", 0)
     }
+
+    private fun initAdapter() {
+        adapter = ProfessionAdapter(this,userId)
+        rv_choose_career.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rv_choose_career.adapter = adapter
+    }
+
+    private fun loadData() {
+
+        RetrofitUtil.getHttpService().professions
+                .compose(RetrofitUtil.CommonOptions<ProfessionResult>())
+                .subscribe(object : CodeHandledSubscriber<ProfessionResult>() {
+                    override fun onError(apiException: ApiException?) {
+                    }
+
+                    override fun onBusinessNext(data: ProfessionResult?) {
+//                        initAdapter(data)
+                        adapter!!.setData(data!!.data!!)
+                    }
+
+                    override fun onCompleted() {
+                    }
+
+                })
+    }
+
 }
