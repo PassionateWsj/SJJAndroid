@@ -59,6 +59,10 @@ class LoginActivity : BaseActivity() {
      * 登录子页面
      */
     private var registerLayout: View? = null
+    /**
+     * 正在获取验证码
+     */
+    private var receivingVerificationCode = false
     private val MIN_CLICK_DELAY_TIME: Int = 1000
     private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,11 +109,15 @@ class LoginActivity : BaseActivity() {
             // 注册 手机号输入内容监听
             registerLayout!!.et_register_mobile.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    changeButtonStyle(registerLayout!!.et_register_password.text.toString(), registerLayout!!.et_register_verification.text.toString(), p0.toString(), registerLayout!!.btn_register)
+                    if (!receivingVerificationCode) {
+                        changeButtonStyle(registerLayout!!.et_register_password.text.toString(), registerLayout!!.et_register_verification.text.toString(), p0.toString(), registerLayout!!.btn_register)
+                    }
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    changeTextViewStyle(registerLayout!!.tv_get_verification, checkPhoneNum(p0.toString()))
+                    if (!receivingVerificationCode) {
+                        changeTextViewStyle(registerLayout!!.tv_get_verification, checkPhoneNum(p0.toString()))
+                    }
                 }
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -187,6 +195,7 @@ class LoginActivity : BaseActivity() {
         }
 
         override fun onFinish() {
+            receivingVerificationCode = false
             registerLayout!!.tv_get_verification.isEnabled = true
             changeTextViewStyle(registerLayout!!.tv_get_verification, true)
             registerLayout!!.tv_get_verification.text = "获取验证码"
@@ -224,6 +233,7 @@ class LoginActivity : BaseActivity() {
                         return
                     }
                     changeTextViewStyle(registerLayout!!.tv_get_verification, false)
+                    receivingVerificationCode = true
                     // 获取验证码
                     RetrofitUtil.getHttpService().getVerificationCode(registerLayout!!.et_register_mobile.text.toString())
                             .compose(RetrofitUtil.CommonOptions<VerificationResult>())
