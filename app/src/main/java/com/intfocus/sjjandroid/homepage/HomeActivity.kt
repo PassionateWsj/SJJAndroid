@@ -1,6 +1,7 @@
 package com.intfocus.sjjandroid.homepage
 
 import android.os.Bundle
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -23,7 +24,13 @@ class HomeActivity: BaseActivity() {
         mWebView = WebView(applicationContext)
         mWebFrameLayout!!.addView(mWebView, 0)
         initWebView()
+        mWebView!!.setWebViewClient(object :WebViewClient(){
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                return true
+            }
+        })
         mWebView!!.loadUrl("http://yonghui-dev.idata.mobi/websites/shujujia/html/index/index.html")
+
     }
 
     private fun initWebView() {
@@ -51,5 +58,6 @@ class HomeActivity: BaseActivity() {
         webSettings.javaScriptCanOpenWindowsAutomatically = true //支持通过JS打开新窗口
         webSettings.loadsImagesAutomatically = true //支持自动加载图片
         webSettings.defaultTextEncodingName = "utf-8"//设置编码格式
+
     }
 }

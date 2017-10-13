@@ -32,7 +32,7 @@ class LoginResult : BaseResult() {
         var uuser_avatar: String? = null
         var user_id: Int = 0
         var user_mobile: String? = null
-        var profession_id: Int = 0
+        var profession_id: String? = null
         var user_name: String? = null
         var profession_name: String? = null
         var profession_icon: String? = null

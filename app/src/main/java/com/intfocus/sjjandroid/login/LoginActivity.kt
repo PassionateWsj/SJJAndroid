@@ -19,7 +19,7 @@ import com.intfocus.sjjandroid.R
 import com.intfocus.sjjandroid.data.response.login.LoginResult
 import com.intfocus.sjjandroid.data.response.login.RegisterResult
 import com.intfocus.sjjandroid.data.response.login.VerificationResult
-import com.intfocus.sjjandroid.main.MainActivity
+import com.intfocus.sjjandroid.homepage.HomeActivity
 import com.intfocus.sjjandroid.net.ApiException
 import com.intfocus.sjjandroid.net.CodeHandledSubscriber
 import com.intfocus.sjjandroid.net.RetrofitUtil
@@ -271,13 +271,13 @@ class LoginActivity : BaseActivity() {
 
                                 override fun onBusinessNext(data: LoginResult?) {
 //                                    ToastUtils.show(this@LoginActivity, "登录成功")
-                                    if (data!!.data!!.profession_id == 0) {
+                                    if (data!!.data!!.profession_id == null) {
                                         // todo 用户职业为 null 则跳转职业选择界面
                                         val intent = Intent(this@LoginActivity, ChooseCareerActivity::class.java)
                                         intent.putExtra("userId", data.data!!.user_id)
                                         startActivity(intent)
                                     } else {
-                                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                                     }
                                 }
 

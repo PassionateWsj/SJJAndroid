@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
 import com.intfocus.sjjandroid.R
 import com.intfocus.sjjandroid.data.response.BaseResult
 import com.intfocus.sjjandroid.data.response.info.ProfessionResult
+import com.intfocus.sjjandroid.homepage.HomeActivity
 import com.intfocus.sjjandroid.listener.NoDoubleClickListener
 import com.intfocus.sjjandroid.login.ChooseCareerActivity
-import com.intfocus.sjjandroid.main.MainActivity
 import com.intfocus.sjjandroid.net.ApiException
 import com.intfocus.sjjandroid.net.CodeHandledSubscriber
 import com.intfocus.sjjandroid.net.RetrofitUtil
@@ -62,7 +62,7 @@ class ProfessionAdapter(private val ctx: Context, private val userId: Int) : Rec
 
                                 override fun onBusinessNext(data: BaseResult?) {
                                     ToastUtils.show(ctx, data!!.msg!!)
-                                    ctx.startActivity(Intent(ctx, MainActivity::class.java))
+                                    ctx.startActivity(Intent(ctx, HomeActivity::class.java))
                                     (ctx as ChooseCareerActivity).finish()
                                 }
 
